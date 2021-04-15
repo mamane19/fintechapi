@@ -24,8 +24,18 @@ export async function up(i: any) {
       type: Sequelize.CHAR(250),
       allowNull: false,
     },
+    Salt: {
+      type: Sequelize.CHAR(250),
+      allowNull: true,
+    },
+    createdAt: {
+      type: Sequelize.DATE,
+    },
+    updatedAt: {
+      type: Sequelize.DATE,
+    }
   });
-}
+};
 
 export async function down(i: any) {
   const queryInterface = i.getQueryInterface() as Sequelize.QueryInterface;
