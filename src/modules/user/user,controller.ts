@@ -1,22 +1,17 @@
-import {
-  Controller,
-  Post,
-  Body,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
-import { UsersServices } from './user.service';
+import { UsersService } from './user.service';
+import { Controller, Post, Body, HttpException, HttpStatus, Res } from '@nestjs/common';
 import { IUser } from './interface/user.interface';
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersServices: UsersServices) {}
-  @Post('register')
-  public async register(@Body() user: IUser): Promise<any> {
-    const result: any = await this.usersServices.create(user);
+  constructor(private usersService: UsersService) { }
+
+  @Post('register')  
+    public async register(@Res() res, @Body() user: IUser): Promise<any> {    
+    const result: any = await this.usersService.create(user);
     if (!result.success) {
-      throw new HttpException(result.message, HttpStatus.BAD_REQUEST);
+        throw new HttpException(result.message, HttpStatus.BAD_REQUEST);    
     }
-    return result;
+    return res.status(HttpStatus.OK).json(result);  
   }
 }
