@@ -10,7 +10,7 @@ export class UsersService {
   constructor(
     @Inject('USERS_REPOSITORY') private usersRepository: typeof Users,
     private accountsService: AccountsService,
-  ) { } 
+  ) {}
 
   public async create(user: any): Promise<object> {
     const exists = await Users.findOne({ where: { Email: user.Email } });
@@ -18,11 +18,13 @@ export class UsersService {
     if (exists) {
       return {
         success: false,
-        message: 'This email already exists.'
-      }
+        message: 'This email already exists.',
+      };
     } else {
       user.Salt = crypto.randomBytes(128).toString('base64');
-      user.Password = crypto.createHmac('sha256', user.Password + user.Salt).digest('hex');
+      user.Password = crypto
+        .createHmac('sha256', user.Password + user.Salt)
+        .digest('hex');
       const newUser: any = await this.usersRepository.create<Users>(user);
       const jwtToken = jwt.sign(user, process.env.JWT_KEY, jwtConfig);
       newUser.Token = jwtToken;
@@ -38,13 +40,13 @@ export class UsersService {
           },
           token: jwtToken,
           success: true,
-        }
+        };
         return response;
       }
-      return { 
+      return {
         success: false,
         message: 'Creating new user went wrong.',
-      }
+      };
     }
   }
 }

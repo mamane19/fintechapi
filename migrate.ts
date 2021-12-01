@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import Umzug = require('umzug');
-require ('dotenv').config();
+require('dotenv').config();
 
 const sequelize = new Sequelize({
   dialect: 'mysql',
